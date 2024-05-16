@@ -1,1 +1,5 @@
-
+- LED-grün: D3
+- LED-rot: D2
+- Knopf: D1
+- LCD-Display:  - SCL: SD2
+                - SDA: SD1
