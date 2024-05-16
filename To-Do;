@@ -1,4 +1,22 @@
 To-Do:
-  -Hardware:
-  -Software:
-  -SoftSkills:
+  - Hardware:
+    - Auf Teile warten
+    - Tests mt Breadboard
+    - Löten
+    - 3D-Druck (Gehäuse)
+  - Software:
+    - Anforderungen an die Programme
+    - Kommunikation zwischen den ESP's
+      - Protokoll festlegen
+    - Steuerung des Mainboards
+      - Status LED's
+      - Schlüsselcode generierung
+    - Steuerung der Safe's
+      - Status LED's
+      - PIN eingabe + öffnen des Safes
+      - RFID erkennung (Ist der Schlüssel da?)
+  - SoftSkills:
+    - Wie und wo dran arbeiten? Do 12 Uhr zum Briefing.
+    - Doku
+    - Zeitplan
+    - Git einrichten
