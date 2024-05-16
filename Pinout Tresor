@@ -1,0 +1,29 @@
+Pinout Tresor:
+Wenn die aktuelle Lösung nicht passt, bitte hier anpassen.
+
+Servo:
+CLK
+
+LED-Grün:
+D8
+
+LED-Rot:
+RX
+
+RFI= RC522:
+SDA  =  SD3
+SCK  =  SD2
+MOSI =  SD1
+MISO =  CMD
+IRQ  = -
+RST  =  SD0
+
+Numpad:
+31  =  D7
+30  =  D6
+29  =  D5
+28  =  D4
+27  =  D3
+26  =  D2
+25  =  D1
+24  =  D0
