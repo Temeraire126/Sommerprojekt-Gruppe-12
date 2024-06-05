@@ -8,7 +8,7 @@ LED-Grün:
 D8
 
 LED-Rot:
-RX
+RX (nicht für Output geeignet!!!)
 
 RFI= RC522:
 SDA  =  SD3
