@@ -1,5 +1,6 @@
 // RFID-Bibliothek hinzufügen
 #include <MFRC522.h>
+#include <Servo.h>
 
 //Anschlüsse definieren 
 #define SDS_Pin 10
@@ -9,14 +10,17 @@
 # define LED_RED
 # define LED_GREEN
 
-
 // Zustand der LEDs false = beim Start ausgeschaltet
 bool StatusroteLED = true;
 bool StatusgrueneLED = false;
 
 //RFID-Empfänger bennen, Pins zuordnen
-MFRC522 rfid(SS_Pin, RST_Pin);
+MFRC522 rfid(SDS_Pin, RST_Pin);
 
+
+Servo myservo;
+  int pos = 0;
+  
 void setup() {
   myservo.attach();
   pinMode(LED_RED, OUTPUT);
@@ -78,14 +82,14 @@ closeSesame();
 }
 
 //Methoden für den Servo
-public void openSesame(){
+void openSesame(){
 for (pos = 0; pos <= 180; pos += 1){ //goes from 0 degrees to 180 degrees in steps of 1 degree
 myservo.write(pos);                  //tell servo to go to position in variable 'pos'
 delay(15);                           //waits 15ms for the servo to reach the position
 }
 }
 
-public void closeSesame(){
+void closeSesame(){
 for (pos = 0; pos <= 180; pos += 1){ //goes from 0 degrees to 180 degrees in steps of 1 degree
 myservo.write(pos);                  //tell servo to go to position in variable 'pos'
 delay(15);                           //waits 15ms for the servo to reach the position
