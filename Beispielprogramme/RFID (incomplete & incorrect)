@@ -1,0 +1,24 @@
+#include <MFRC522.h>
+
+//Anschlüsse definieren
+#define SS_Pin 10
+#define RST_Pin 9
+
+//RFID-Empfänger bennen, Pins zuordnen
+MFRC522 rfid(SS_Pin, RST_Pin);
+
+void setup() {
+  myservo.attach();
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_GREEN, OUTPUT);
+
+  Serial.begin(9600);
+  SPI.begin();
+
+  //Initialsierung des RFID-Empfängers
+  rfid.PCD_Init();
+  }
+  
+  
+
+
