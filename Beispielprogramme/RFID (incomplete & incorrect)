@@ -18,6 +18,39 @@ void setup() {
   //Initialsierung des RFID-Empfängers
   rfid.PCD_Init();
   }
+
+void loop()
+{
+String WertDEZ;
+
+//Wenn keine Karte in Reichweite ist...
+if (!rfid.PICC_IsNewCardpresent())
+{
+//... wird die Abfrage wiederholt.
+return;
+}
+
+//Wenn kein RFID-Sender ausgewählt wurde...
+if (!rfid.PICC_ReadCardSerial())
+{
+//...wird die Abfrage wiederholt.
+return;
+}
+
+Serial.println("Karte entdeckt!");
+
+//Dezimal-Wert in Strings schreiben
+for (byte i = 0; i < MFRC522.uid.size; i++) über jedes Byte der UID der Karte
+{
+//String zusammenbauen
+WertDEZ = WertDEZ + String(MFRC522.uid.uidByte[i], DEC) + " "; 
+}
+
+//trim() -> Leerzeichen am Ende des Strings entfernen
+
+
+
+
   
   
 
