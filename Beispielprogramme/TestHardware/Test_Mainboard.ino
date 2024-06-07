@@ -1,27 +1,35 @@
-#include <LiquidCrystal.h>
+#include <Wire.h>                    // Wire Bibliothek einbinden
+#include <LiquidCrystal_I2C.h>       // Vorher hinzugefügte LiquidCrystal_I2C Bibliothek einbinden
+LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt. In diesem Fall eines mit 16 Zeichen in 2 Zeilen und der HEX-Adresse 0x27. Für ein vierzeiliges I2C-LCD verwendet man den Code "LiquidCrystal_I2C lcd(0x27, 20, 4)"
 
-#define LED_RED D2;
-#define LED_GREEN D3;
-#define BUTTON D1;
-
-const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
-LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+#define LED_RED D5
+#define LED_GREEN D4
+#define BUTTON D6
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(BUTTON, INPUT);
-  lcd.begin(16, 2);
+  Serial.begin(9600);
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_GREEN, OUTPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+  lcd.init();       //Im Setup wird der LCD gestartet
+  lcd.backlight();  //Hintergrundbeleuchtung einschalten (lcd.noBacklight(); schaltet die Beleuchtung aus).
+  lcd.print("hello, world!");
 }
 
 void loop() {
   digitalWrite(LED_RED, HIGH);
-  if(BUTTON==HIGH){
-    lcd.print("hello, world!");
+  if (digitalRead(BUTTON) == LOW) {
+    lcd.setCursor(0, 0);
+    lcd.print("Knopf gedrückt!");
     digitalWrite(LED_RED, LOW);
     digitalWrite(LED_GREEN, HIGH);
-    delay(500);
+    delay(1000);
     digitalWrite(LED_RED, HIGH);
     digitalWrite(LED_GREEN, LOW);
+  } else {
+    delay(1000);
+    lcd.setCursor(0, 0);
+    lcd.print("Knopf nicht gedrückt");
   }
-
 }
