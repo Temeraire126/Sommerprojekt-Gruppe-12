@@ -67,7 +67,7 @@ WertDEZ.trim();
 Serial.println("Dezimalwert: " + WertDEZ);
 
 //rote LED, wenn Chip falsch ist
-if (WerteDEZ != 1)
+if (WerteDEZ != " 1 ")
 {
 
 //rote LED schalten
