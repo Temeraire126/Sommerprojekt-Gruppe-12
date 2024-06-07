@@ -73,6 +73,7 @@ if (WerteDEZ != " 1 ")
 //rote LED schalten
 StatusroteLED = !StatusroteLED;
 digitalWrite(LED_RED, StatusroteLED);
+  delay(2000);
 }
 
 //gruene LED schalten
@@ -81,9 +82,10 @@ if (WerteDEZ == " 1 ")
 LED_GREEN = !LED_GREEN;
 digitalWrite(GREEN_LED,StatusgrueneLED);
 openSesame();
+  delay(2000);
 }
 //Wartezeit verhindert, dass die Karte nur einmal erkannt wird
-delay(1000);
+delay(5000);
 closeSesame();
 }
 
