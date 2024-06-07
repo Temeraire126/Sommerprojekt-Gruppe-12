@@ -11,7 +11,7 @@
 # define LED_GREEN
 
 // Zustand der LEDs false = beim Start ausgeschaltet
-bool StatusroteLED = true;
+bool StatusroteLED = false;
 bool StatusgrueneLED = false;
 
 //RFID-Empfänger bennen, Pins zuordnen
@@ -66,11 +66,17 @@ WertDEZ.trim();
 //Kennung dezimal anzeigen
 Serial.println("Dezimalwert: " + WertDEZ);
 
-//rote LED, wenn kein WerteDEZ anliegt
-//....code...//
+//rote LED, wenn Chip falsch ist
+if (WerteDEZ != 1)
+{
 
-//gruene LED schalte
-if (WerteDEZ == " ")
+//rote LED schalten
+StatusroteLED = !StatusroteLED;
+digitalWrite(LED_RED, StatusroteLED);
+}
+
+//gruene LED schalten
+if (WerteDEZ == " 1 ")
 {
 LED_GREEN = !LED_GREEN;
 digitalWrite(GREEN_LED,StatusgrueneLED);
