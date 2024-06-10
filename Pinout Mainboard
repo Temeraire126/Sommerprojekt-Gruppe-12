@@ -1,5 +1,8 @@
 - LED-grün: D4
 - LED-rot: D5
-- knopf: D6
+- LED-grün: D7
+- LED-rot: D8
+- Taster1: D6
+- Taster2: D3
 - LCD-Display:  - SCL: D1
                 - SDA: D2
