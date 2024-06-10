@@ -12,12 +12,12 @@ LED-Rot:
 D3
 
 RFI= RC522:
-SDA  =  d8
+SDA  =  d1
 SCK  =  d7
 MOSI =  d6
 MISO =  d5
 IRQ  = 
-RST  =  d
+RST  =  d4
 
 Numpad:
 31  =  D7
