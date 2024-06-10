@@ -14,11 +14,11 @@
 MFRC522 mfrc522(SDA_Pin, RST_Pin);
 
 
-//Servo myservo;
-  //int pos = 0;
+Servo myservo;
+  int pos = 0;
   
 void setup() {
-  //myservo.attach();
+  myservo.attach(D8);
 
   Serial.begin(115200);
   SPI.begin();
@@ -69,29 +69,23 @@ if (WertDEZ == "39 123 81 211")
 //gruene LED schalten
 digitalWrite(LED_RED, LOW);
 digitalWrite(LED_GREEN,HIGH);
+
+for (pos = 0; pos <= 180; pos += 1){//goes from 0 degrees to 180 degrees in steps of 1 degree
+myservo.write(pos);                  //tell servo to go to position in variable 'pos'
+delay(15);                           //waits 15ms for the servo to reach the position
 }
+delay(1000);
+ for (pos = 180; pos >= 0; pos -= 1) {  // goes from 180 degrees to 0 degrees
+        myservo.write(pos);                  // tell servo to go to position in variable 'pos'
+        delay(15);                           // waits 15 ms for the servo to reach the position
+      }
+}
+
 
 // Status eandern: rote LED schalten bei falschem Chip
 if (WertDEZ != "39 123 81 211")
 {
 digitalWrite(LED_GREEN, LOW);
 digitalWrite(LED_RED, HIGH);
-//openSesame();
-}
-//closeSesame();
-}
-
-//Methoden für den Servo
-/*void openSesame(){
-for (pos = 0; pos <= 180; pos += 1){ //goes from 0 degrees to 180 degrees in steps of 1 degree
-myservo.write(pos);                  //tell servo to go to position in variable 'pos'
-delay(15);                           //waits 15ms for the servo to reach the position
 }
 }
-
-void closeSesame(){
-for (pos = 0; pos <= 180; pos += 1){ //goes from 0 degrees to 180 degrees in steps of 1 degree
-myservo.write(pos);                  //tell servo to go to position in variable 'pos'
-delay(15);                           //waits 15ms for the servo to reach the position
-}
-}*/
