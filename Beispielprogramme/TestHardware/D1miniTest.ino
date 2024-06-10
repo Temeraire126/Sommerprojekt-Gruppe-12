@@ -2,7 +2,6 @@
 
 const byte ROWS = 4;
 const byte COLS = 4;
-const int CODELENGTH = 4;
 char keys[ROWS][COLS] = {
   { '1', '2', '3', 'A' },
   { '4', '5', '6', 'B' },
@@ -13,6 +12,8 @@ byte rowPins[ROWS] = { 5, 4, 3, 2 };  //connect to the row pinouts of the keypad
 byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+
+#define PIN_OUTPUT D3
 
 void setup() {
   // put your setup code here, to run once:
@@ -25,7 +26,7 @@ void loop() {
 
   if (key) {
     Serial.println(key);
-    char code[CODELENGTH] = {'0','0','0','0'};
+    char code[] = {'0','0','0','0'};
     if(checkCode(code, key)){
       digitalWrite(LED_BUILTIN,HIGH);
       delay(500);
@@ -34,8 +35,8 @@ void loop() {
   }
 }
 
-boolean checkCode(char code[CODELENGTH], char first) {
-  char input[CODELENGTH];
+boolean checkCode(char code[], char first) {
+  char input[sizeof(code)];
   input[0] = first;
   int index = 1;
   int time = 0;
@@ -47,7 +48,7 @@ boolean checkCode(char code[CODELENGTH], char first) {
       time = 0;
       input[index] = key;
       index += 1;
-      if (index == CODELENGTH) {
+      if (index == sizeof(code)) {
         return strcmp(input, code);
       }
     }
