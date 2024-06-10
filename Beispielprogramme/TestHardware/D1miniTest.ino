@@ -2,7 +2,7 @@
 #include <epsnow.h>
 #include <ESP8266WiFi.h>
 typedef struct codeStruct{
-  char a[];
+  char *a;
 } codeStruct;
 codeStruct recvData;
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
