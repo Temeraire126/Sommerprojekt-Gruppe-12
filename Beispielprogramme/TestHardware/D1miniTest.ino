@@ -34,19 +34,20 @@ void setup() {
   }
   esp_now_set_self_role(ESP_NOW_ROLE_SLAVE);
   esp_now_register_recv_cb(OnDataRecv);
+  pinMode(PIN_OUTPUT,OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+  digital.write(PIN_OUTPUT,LOW);
   char key = keypad.getKey();
 
   if (key) {
     Serial.println(key);
     char *code = recvData.a;
     if(checkCode(code, key)){
-      digitalWrite(LED_BUILTIN,HIGH);
-      delay(500);
-      digitalWrite(LED_BUILTIN,LOW);
+        digital.write(PIN_OUTPUT,HIGH);
+        delay(2000);
     }
   }
 }
