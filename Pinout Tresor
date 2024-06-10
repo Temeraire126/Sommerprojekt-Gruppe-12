@@ -2,21 +2,22 @@ Pinout Tresor:
 Wenn die aktuelle Lösung nicht passt, bitte hier anpassen.
 
 Servo:
-CLK (bitte nicht!!!)
+D1
+
 
 LED-Grün:
-D8
+D2
 
 LED-Rot:
-RX (nicht für Output geeignet!!!)
+D3
 
 RFI= RC522:
-SDA  =  SD3
-SCK  =  SD2
-MOSI =  SD1
-MISO =  CMD
-IRQ  = -
-RST  =  SD0
+SDA  =  d8
+SCK  =  d7
+MOSI =  d6
+MISO =  d5
+IRQ  = 
+RST  =  d
 
 Numpad:
 31  =  D7
