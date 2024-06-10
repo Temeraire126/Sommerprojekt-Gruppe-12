@@ -1,4 +1,13 @@
 #include <Keypad.h>
+#include <epsnow.h>
+#include <ESP8266WiFi.h>
+typedef struct codeStruct{
+  char a[];
+} codeStruct;
+codeStruct recvData;
+void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
+  memcpy(&recvData, incomingData,sizeof(recvData));
+ }
 
 const byte ROWS = 4;
 const byte COLS = 4;
@@ -18,6 +27,13 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
+  Wifi.mode(WIFI_STA);
+  if(esp_now_inti() != 0{
+    Serial.println("Error");
+    return;
+  }
+  esp_now_set_self_role(ESP_NOW_ROLE_SLAVE);
+  esp_now_register_recv_cb(OnDataRecv);
 }
 
 void loop() {
@@ -26,7 +42,7 @@ void loop() {
 
   if (key) {
     Serial.println(key);
-    char code[] = {'0','0','0','0'};
+    char *code = recvData.a;
     if(checkCode(code, key)){
       digitalWrite(LED_BUILTIN,HIGH);
       delay(500);
