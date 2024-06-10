@@ -10,10 +10,6 @@
 # define LED_RED D2
 # define LED_GREEN D3
 
-// Zustand der LEDs false = beim Start ausgeschaltet
-bool StatusroteLED = false;
-bool StatusgrueneLED = false;
-
 //RFID-Empfänger bennen, Pins zuordnen
 MFRC522 mfrc522(SDA_Pin, RST_Pin);
 
@@ -71,22 +67,17 @@ Serial.println("Dezimalwert: " + WertDEZ);
 if (WertDEZ == "39 123 81 211")
 {
 //gruene LED schalten
-StatusgrueneLED = !StatusgrueneLED;
-digitalWrite(LED_GREEN, StatusgrueneLED);
 digitalWrite(LED_RED, LOW);
+digitalWrite(LED_GREEN,HIGH);
 }
 
 // Status eandern: rote LED schalten bei falschem Chip
-if (WertDEZ == "169 140 161 226")
+if (WertDEZ != "39 123 81 211")
 {
-  Serial.println("chip 2");
-StatusroteLED = !StatusroteLED;
-digitalWrite(LED_RED,StatusroteLED);
 digitalWrite(LED_GREEN, LOW);
+digitalWrite(LED_RED, HIGH);
 //openSesame();
 }
-//Wartezeit verhindert, dass die Karte nur einmal erkannt wird
-delay(2000);
 //closeSesame();
 }
 
