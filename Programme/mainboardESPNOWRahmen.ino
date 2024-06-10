@@ -4,21 +4,28 @@
 uint8_t addressMini1[] = {0xC8,0xC9,0xA3,0x14,0x32,0x59};
 uint8_t addressMini2[] = {0x60,0x01,0x94,0x10,0x09,0x3C};
 typedef struct packageCodeStruct{
-  uint a;
+  char a[];
 } packageCodeStruct;
 typedef struct packageResponseStruct{
   bool b;
 } packageResponseStruct;
 
-packageCodeStruct sendData1;
-packageCodeStruct sendData2;
+packageCodeStruct sendData;
 packageResponseStruct recvData1;
 packageResponseStruct recvData2;
-unsigned long lastTime = 0;  
-unsigned long timerDelay = 20000;
+
+bool statusTresor1=true;
+bool statusTresor2=true;
+
+const int codeLength =4;
 
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
-  memcpy(&recvData, incomingData,sizeof(recvData1));
+  if(mac=={0x4C,0x75,0x25,0x36,0xBD,0x64}){
+  memcpy(&recvData1, incomingData,sizeof(recvData1));
+  }
+  if(mac=={0x08,0x3A,0x8D,0xCF,0xAF,0x55}){
+  memcpy(&recvData2, incomingData,sizeof(recvData2));
+  }
   Serial.print("received");
  }
 void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
@@ -46,13 +53,32 @@ void setup() {
   esp_now_add_peer(addressMini1, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
   esp_now_add_peer(addressMini2, ESP_NOW_ROLE_SLAVE, 2, NULL, 0);
 }
-void sendCodes(uint code1, uint code2){
-  sendData1.a=code1;
-  sendData2.a=code2;
-  esp_now_send(addressMini1, (uin8_t *)&sendData1,sizeof(sendData1));
-  esp_now_send(addressMini2, (uin8_t *)&sendData2,sizeof(sendData2));
+char[] generateCode(){
+  char code[codeLength];
+  int zahl;
+  for (int i = 0; i< codeLength; i++){
+    zahl = (rand()%10);
+    code[i] = '0' + zahl;
+  }
+  return code;
 }
+void updateLED(){
+
+}
+void showCode(char values[]){
+
+}
+
 void loop() {
   // put your main code here, to run repeatedly:
-
+  if(buttonpress,mini1){
+    sendData1.a=generateCode();
+    esp_now_send(addressMini1, (uin8_t *)&sendData,sizeof(sendData));
+    sendData1.a=NULL;
+  }
+  if(buttonpress,mini2){
+    sendData1.a=generateCode();
+    esp_now_send(addressMini2, (uin8_t *)&sendData,sizeof(sendData));
+    sendData1.a=NULL;
+  }
 }
