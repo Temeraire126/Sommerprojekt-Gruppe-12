@@ -44,8 +44,13 @@ void loop() {
 
   if (key) {
     Serial.println(key);
-    char *code = recvData.a;
-    if(checkCode(code, key)){
+    //convert char* to char[]
+     char *codetmp = recvData.a;
+     int length = strlen(codetmp);
+     char codeArray[length+1];
+     strcpy(codeArray, codetmp);
+  
+    if(checkCode(codeArray, key)){
         digital.write(PIN_OUTPUT,HIGH);
         delay(2000);
     }
