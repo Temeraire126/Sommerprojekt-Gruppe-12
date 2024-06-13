@@ -50,7 +50,7 @@ void loop() {
     
     std::string tmp = recvData.a;
     char codeArray[sizeof(tmp)];
-    or( int i=0;i<sizeof(tmp);i++ ){
+    for( int i=0;i<sizeof(tmp);i++ ){
     code[i]=tmp[i];
     }
     
