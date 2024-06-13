@@ -9,6 +9,7 @@
 //LEDs
 # define LED_RED D2
 # define LED_GREEN D3
+# define Input_Keypad A0
 
 //RFID-Empfänger bennen, Pins zuordnen
 MFRC522 mfrc522(SDA_Pin, RST_Pin);
