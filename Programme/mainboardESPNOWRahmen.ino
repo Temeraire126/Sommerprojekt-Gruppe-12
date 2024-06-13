@@ -21,7 +21,7 @@ const int codeLength =4;
  uint8_t recvAddress2[] = {0x08,0x3A,0x8D,0xCF,0xAF,0x55};
 //pakate definieren und initialisieren
  typedef struct packageCodeStruct{
-  char* a;
+  String a;
  } packageCodeStruct;
  typedef struct packageResponseStruct{
   bool b;
@@ -77,15 +77,14 @@ void setup() {
   esp_now_add_peer(addressMini1, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
   esp_now_add_peer(addressMini2, ESP_NOW_ROLE_SLAVE, 2, NULL, 0);
 }
-std:string generateCode(){
+String generateCode(){
   char code[codeLength];
   int zahl;
   for (int i = 0; i< codeLength; i++){
     zahl = (rand()%10);
     code[i] = '0' + zahl;
   }
-  std::string rtr = code;
-  rtr.erase(codeLength, std::string::npos);
+  String rtr = code;
   return rtr;
 }
 
@@ -115,15 +114,14 @@ for (int i = 0; i < sizeof(values); i++) {
 void loop() {
   // put your main code here, to run repeatedly:
   if(digitalRead(BUTTON1) == HIGH){
-    std::string code=generateCode();
+    String code=generateCode();
     sendData.a=code;
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
-    sendData.a=nullptr;
   }
   if(digitalRead(BUTTON2)== HIGH){
-    std::string code = generateCode();
+    String code = generateCode();
     sendData.a=code;
     esp_now_send(addressMini2, (uint8_t *)&sendData,sizeof(sendData));
-    sendData.a=nullptr;
+   
   }
 }
