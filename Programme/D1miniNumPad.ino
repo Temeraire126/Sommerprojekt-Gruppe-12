@@ -1,8 +1,9 @@
 #include <Keypad.h>
 #include <epsnow.h>
 #include <ESP8266WiFi.h>
+#include <String>
 typedef struct codeStruct{
-  char *a;
+  std::string a;
 } codeStruct;
 codeStruct recvData;
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
@@ -45,12 +46,14 @@ void loop() {
 
   if (key) {
     Serial.println(key);
-    //convert char* to char[]
-     char *codetmp = recvData.a;
-     int length = strlen(codetmp);
-     char codeArray[length+1];
-     strcpy(codeArray, codetmp);
-  
+    //convert string to char[]
+    
+    std::string tmp = recvData.a;
+    char codeArray[sizeof(tmp)];
+    or( int i=0;i<sizeof(tmp);i++ ){
+    code[i]=tmp[i];
+    }
+    
     if(checkCode(codeArray, key)){
         digital.write(PIN_OUTPUT,HIGH);
         delay(2000);
