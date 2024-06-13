@@ -1,6 +1,6 @@
 #include <espnow.h>
 #include <ESP8266WiFi.h>
-
+#include <String>
 //Pins
 #define REDLED1 D5
 #define REDLED2 D8
@@ -73,14 +73,15 @@ void setup() {
   esp_now_add_peer(addressMini1, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
   esp_now_add_peer(addressMini2, ESP_NOW_ROLE_SLAVE, 2, NULL, 0);
 }
-char *generateCode(){
+std:string generateCode(){
   char code[codeLength];
   int zahl;
   for (int i = 0; i< codeLength; i++){
     zahl = (rand()%10);
     code[i] = '0' + zahl;
   }
-  char * rtr = code;
+  std::string rtr = code;
+  rtr.erase(codeLength, std::string::npos);
   return rtr;
 }
 
@@ -110,16 +111,14 @@ for (int i = 0; i < sizeof(values); i++) {
 void loop() {
   // put your main code here, to run repeatedly:
   if(digitalRead(BUTTON1) == HIGH){
-    char * code=generateCode();
+    std::string code=generateCode();
     sendData.a=code;
-    free(code);
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
     sendData.a=nullptr;
   }
   if(digitalRead(BUTTON2)== HIGH){
-    char * code = generateCode();
+    std::string code = generateCode();
     sendData.a=code;
-    free(code);
     esp_now_send(addressMini2, (uint8_t *)&sendData,sizeof(sendData));
     sendData.a=nullptr;
   }
