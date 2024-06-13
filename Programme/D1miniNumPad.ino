@@ -3,7 +3,7 @@
 #include <ESP8266WiFi.h>
 #include <String>
 typedef struct codeStruct{
-  std::string a;
+  String a;
 } codeStruct;
 codeStruct recvData;
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
@@ -48,12 +48,15 @@ void loop() {
     Serial.println(key);
     //convert string to char[]
     
-    std::string tmp = recvData.a;
-    char codeArray[sizeof(tmp)];
-    for( int i=0;i<sizeof(tmp);i++ ){
-    code[i]=tmp[i];
+    String tmp = recvData.a;
+    char codeArray[4];
+    for( int i=0;i<4);i++ ){
+    codeArray[i]=tmp[i];
     }
-    
+    //*****************************//
+    // replace '4' with codelength //
+    //*****************************//
+
     if(checkCode(codeArray, key)){
         digital.write(PIN_OUTPUT,HIGH);
         delay(2000);
