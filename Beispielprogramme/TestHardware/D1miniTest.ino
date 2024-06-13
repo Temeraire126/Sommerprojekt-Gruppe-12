@@ -1,13 +1,4 @@
 #include <Keypad.h>
-#include <epsnow.h>
-#include <ESP8266WiFi.h>
-typedef struct codeStruct{
-  char *a;
-} codeStruct;
-codeStruct recvData;
-void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
-  memcpy(&recvData, incomingData,sizeof(recvData));
- }
 
 const byte ROWS = 4;
 const byte COLS = 4;
@@ -17,8 +8,10 @@ char keys[ROWS][COLS] = {
   { '7', '8', '9', 'C' },
   { '*', '0', '#', 'D' }
 };
-byte rowPins[ROWS] = { 5, 4, 3, 2 };  //connect to the row pinouts of the keypad
-byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the keypad
+//D0,D1,D2,D4
+byte rowPins[ROWS] = { 16, 5, 4, 2 };  //connect to the row pinouts of the keypad
+//D5,D6,D7,D8
+byte colPins[COLS] = { 14, 12, 13, 15 };  //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
@@ -26,34 +19,20 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 void setup() {
   // put your setup code here, to run once:
-  pinMode(PIN_OUTPUT, OUTPUT);
   Serial.begin(9600);
-  Wifi.mode(WIFI_STA);
-  if(esp_now_inti() != 0{
-    Serial.println("Error");
-    return;
-  }
-  esp_now_set_self_role(ESP_NOW_ROLE_SLAVE);
-  esp_now_register_recv_cb(OnDataRecv);
-  pinMode(PIN_OUTPUT,OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  digital.write(PIN_OUTPUT,LOW);
   char key = keypad.getKey();
 
   if (key) {
     Serial.println(key);
-    //convert char* to char[]
-     char *codetmp = recvData.a;
-     int length = strlen(codetmp);
-     char codeArray[length+1];
-     strcpy(codeArray, codetmp);
-  
-    if(checkCode(codeArray, key)){
-        digital.write(PIN_OUTPUT,HIGH);
-        delay(2000);
+    char code[] = {'0','0','0','0'};
+    if(checkCode(code, key)){
+      digitalWrite(LED_BUILTIN,HIGH);
+      delay(500);
+      digitalWrite(LED_BUILTIN,LOW);
     }
   }
 }
