@@ -26,6 +26,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 void setup() {
   // put your setup code here, to run once:
+  pinMode(PIN_OUTPUT, OUTPUT);
   Serial.begin(9600);
   Wifi.mode(WIFI_STA);
   if(esp_now_inti() != 0{
