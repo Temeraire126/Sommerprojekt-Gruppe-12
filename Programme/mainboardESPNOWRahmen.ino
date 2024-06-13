@@ -109,14 +109,14 @@ for (int i = 0; i < sizeof(values); i++) {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(digitalRead(BUTTON1)){
+  if(digitalRead(BUTTON1) == HIGH){
     char * code=generateCode();
     sendData.a=code;
     free(code);
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
     sendData.a=nullptr;
   }
-  if(digitalRead(BUTTON2)){
+  if(digitalRead(BUTTON2)== HIGH){
     char * code = generateCode();
     sendData.a=code;
     free(code);
