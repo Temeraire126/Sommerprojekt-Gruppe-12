@@ -1,6 +1,14 @@
 #include <espnow.h>
 #include <ESP8266WiFi.h>
 
+//Pins
+#define REDLED1 D5
+#define REDLED2 D8
+#define GREENLED1 D4
+#define GREENLED2 D7
+#define BUTTON1 D6
+#define BUTTON2 D3
+
 const int codeLength =4;
 //adressen festlegen
  uint8_t addressMini1[] = {0xC8,0xC9,0xA3,0x14,0x32,0x59};
@@ -21,6 +29,8 @@ const int codeLength =4;
 
 bool statusTresor1=true;
 bool statusTresor2=true;
+
+bool codeIsDisplayed = false;
 
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
   if(0==memcmp(recvAddress1, mac , sizeof(mac))){
@@ -44,6 +54,14 @@ void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+ //Pin Modes:
+      pinMode(REDLED1, OUTPUT);
+      pinMode(REDLED2, OUTPUT);
+      pinMode(GREENLED1, OUTPUT);
+      pinMode(GREENLED2, OUTPUT);
+      pinMode(BUTTON1, INPUT_PULLUP);
+      pinMode(BUTTON2, INPUT_PULLUP);
+ 
   WiFi.mode(WIFI_STA);
   if(esp_now_init() != 0){
     Serial.println("Error initilizing ESPNOW");
@@ -55,7 +73,7 @@ void setup() {
   esp_now_add_peer(addressMini1, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
   esp_now_add_peer(addressMini2, ESP_NOW_ROLE_SLAVE, 2, NULL, 0);
 }
-char* generateCode(){
+char *generateCode(){
   char code[codeLength];
   int zahl;
   for (int i = 0; i< codeLength; i++){
@@ -67,22 +85,38 @@ char* generateCode(){
 }
 
 void updateLED(){
-
+ if (statusTresor1) {
+        digitalWrite(GREENLED1, HIGH);
+        digitalWrite(REDLED1, LOW);
+      } else {
+        digitalWrite(REDLED1, HIGH);
+        digitalWrite(GREENLED1, LOW);
+      }
+      if (statusTresor2) {
+        digitalWrite(GREENLED2, HIGH);
+        digitalWrite(REDLED2, LOW);
+      } else {
+        digitalWrite(REDLED2, HIGH);
+        digitalWrite(GREENLED2, LOW);
+      }
 }
 void showCode(char values[]){
-
+for (int i = 0; i < sizeof(values); i++) {
+        lcd.setCursor(0, i);
+        lcd.print(values[i]);
+      }
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  if(true){
+  if(digitalRead(BUTTON1)){
     char * code=generateCode();
     sendData.a=code;
     free(code);
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
     sendData.a=nullptr;
   }
-  if(true){
+  if(digitalRead(BUTTON2)){
     char * code = generateCode();
     sendData.a=code;
     free(code);
