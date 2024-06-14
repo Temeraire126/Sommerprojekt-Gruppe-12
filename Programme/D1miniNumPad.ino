@@ -23,7 +23,7 @@ byte colPins[COLS] = { D8, D7, D6, D5 };  //connect to the column pinouts of the
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
-#define PIN_OUTPUT D3
+#define PIN_OUTPUT D0
 
 void setup() {
   // put your setup code here, to run once:
