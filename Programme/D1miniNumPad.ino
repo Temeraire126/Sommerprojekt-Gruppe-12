@@ -28,7 +28,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 void setup() {
   // put your setup code here, to run once:
   pinMode(PIN_OUTPUT, OUTPUT);
-  Serial.begin(9600);
+  Serial.begin(115200);
   Wifi.mode(WIFI_STA);
   if(esp_now_inti() != 0{
     Serial.println("Error");
@@ -78,10 +78,14 @@ boolean checkCode(char code[], char first) {
       input[index] = key;
       index += 1;
       if (index == sizeof(code)) {
-        return strcmp(input, code);
+        bool cmp = true;
+        for(int i = 0; i < sizeof(code);i++){
+          if(input[i]!=code[i]){cmp=false;}
+        }
+        return cmp;
       }
     }
-    delay(1000);
+    delay(10);
     time += 1;
   }
   return false;
