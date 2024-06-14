@@ -49,6 +49,10 @@ void loop() {
       digitalWrite(LED_GREEN,HIGH);
       delay(2000);
       closeSesame();
+      if(!checkKey){
+        digitalWrite(LED_GREEN,LOW);
+        openSesame();
+      }
       digitalWrite(LED_GREEN,LOW);
       digitalWrite(LED_RED,HIGH);
     }
