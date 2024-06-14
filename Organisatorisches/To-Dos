@@ -1,0 +1,26 @@
+To-Do:
+  - Hardware:
+    - Auf Teile warten (überprüfen ob alles da ist)         Erledigt
+    - Tests mt Breadboard                                   
+    - Schaltplan
+    - Löten
+    - 3D-Druck (Gehäuse)
+  - Software:
+    - Anforderungen an die Programme                         Erledigt
+      - Struktogramme
+    - Kommunikation zwischen den ESP's                       Erledigt
+      - Protokoll festlegen                                  Erledigt
+    - Steuerung des Mainboards
+      - Displayansteuerung                                   Erledigt                          
+      - Status LED's
+      - Schlüsselcode generierung
+    - Steuerung der Safe's                                   Erledigt
+      - Status LED's
+      - PIN eingabe + öffnen des Safes                       
+      - RFID erkennung (Ist der Schlüssel da?)               Erledigt
+  - SoftSkills:
+    - Übungungszettel bearbeiten
+    - Präsentation
+    - Doku
+    - Zeitplan                                               Erledigt
+    - Git einrichten                                         Erledigt
