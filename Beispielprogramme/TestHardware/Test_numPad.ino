@@ -1,5 +1,3 @@
-#include <Keypad.h>
-
 // Definiere die Anzahl der Reihen und Spalten des Keypads
 const byte COLS = 4; // 4 Spalten
 const byte ROWS = 4; // 4 Zeilen
@@ -13,8 +11,9 @@ char hexaKeys[ROWS][COLS] = {
 };
 
 // Definiere die Pins für Reihen und Spalten
-byte rowPins[COLS] = { D0, D1, D2, D4 }; // Verbinde die Reihenpins zu D5, D6, D7, D8
-byte colPins[COLS] = { D5, D6, D7, D8 }; // Verbinde die Spaltenpins zu D0, D1, D2, D4
+byte rowPins[ROWS] = { D4, D3, D2, D1 };  //connect to the row pinouts of the keypad
+//D5,D6,D7,D8
+byte colPins[COLS] = { D8, D7, D6, D5 };  //connect to the column pinouts of the keypad
 char Taste;
 // Erstelle ein Keypad-Objekt
 Keypad Tastenfeld = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
