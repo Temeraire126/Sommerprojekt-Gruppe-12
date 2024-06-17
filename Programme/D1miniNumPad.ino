@@ -1,5 +1,5 @@
 #include <Keypad.h>
-#include <epsnow.h>
+#include <espnow.h>
 #include <ESP8266WiFi.h>
 #include <String>
 typedef struct codeStruct{
@@ -29,8 +29,8 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(PIN_OUTPUT, OUTPUT);
   Serial.begin(115200);
-  Wifi.mode(WIFI_STA);
-  if(esp_now_inti() != 0{
+  WiFi.mode(WIFI_STA);
+  if(esp_now_init() != 0 ) {
     Serial.println("Error");
     return;
   }
@@ -41,7 +41,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-  digital.write(PIN_OUTPUT,LOW);
+  digitalWrite(PIN_OUTPUT,LOW);
   char key = keypad.getKey();
 
   if (key) {
@@ -50,7 +50,7 @@ void loop() {
     
     String tmp = recvData.a;
     char codeArray[4];
-    for( int i=0;i<4);i++ ){
+    for( int i=0;i<4;i++ ){
     codeArray[i]=tmp[i];
     }
     //*****************************//
@@ -58,7 +58,7 @@ void loop() {
     //*****************************//
 
     if(checkCode(codeArray, key)){
-        digital.write(PIN_OUTPUT,HIGH);
+        digitalWrite(PIN_OUTPUT,HIGH);
         delay(2000);
     }
   }
