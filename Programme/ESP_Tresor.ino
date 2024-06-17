@@ -64,13 +64,13 @@ boolean checkKey() {
   //Wenn keine Karte in Reichweite ist...
   if (!mfrc522.PICC_IsNewCardPresent()) {
     //... wird die Abfrage wiederholt.
-    return;
+    return false;
   }
 
   //Wenn kein RFID-Sender ausgewählt wurde...
   if (!mfrc522.PICC_ReadCardSerial()) {
     //...wird die Abfrage wiederholt.
-    return;
+    return false;
   }
 
   Serial.println("Karte entdeckt!");
