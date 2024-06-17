@@ -1,10 +1,6 @@
 #include <espnow.h>
 #include <ESP8266WiFi.h>
 #include <String>
-
-#include <LiquidCrystal_I2C.h>       // Vorher hinzugefügte LiquidCrystal_I2C Bibliothek einbinden
-LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt. In diesem Fall eines mit 16 Zeichen in 2 Zeilen und der HEX-Adresse 0x27. Für ein vierzeiliges I2C-LCD verwendet man den Code "LiquidCrystal_I2C lcd(0x27, 20, 4)"
-
 //Pins
 #define REDLED1 D5
 #define REDLED2 D8
@@ -12,6 +8,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Di
 #define GREENLED2 D7
 #define BUTTON1 D6
 #define BUTTON2 D3
+
+#include <LiquidCrystal_I2C.h>       // Vorher hinzugefügte LiquidCrystal_I2C Bibliothek einbinden
+LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt. In diesem Fall eines mit 16 Zeichen in 2 Zeilen und der HEX-Adresse 0x27. Für ein vierzeiliges I2C-LCD verwendet man den Code "LiquidCrystal_I2C lcd(0x27, 20, 4)"
+
 
 const int codeLength =4;
 //adressen festlegen
@@ -44,7 +44,9 @@ void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
   memcpy(&recvData2, incomingData,sizeof(recvData2));
   }
   Serial.print("received");
- }
+  updateLED();
+}
+
 void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
   Serial.print("Last Packet Send Status: ");
   if(sendstatus == 0){
@@ -65,6 +67,7 @@ void setup() {
       pinMode(GREENLED2, OUTPUT);
       pinMode(BUTTON1, INPUT_PULLUP);
       pinMode(BUTTON2, INPUT_PULLUP);
+        pinMode(LED_BUILTIN,OUTPUT);
  
   WiFi.mode(WIFI_STA);
   if(esp_now_init() != 0){
@@ -89,20 +92,26 @@ String generateCode(){
 }
 
 void updateLED(){
+  statusTresor1=recvData1.b;
+  statusTresor2=recvData2.b;
  if (statusTresor1) {
         digitalWrite(GREENLED1, HIGH);
-        digitalWrite(REDLED1, LOW);
-      } else {
+        digitalWrite(REDLED1, LOW); 
+        Serial.println(" 1 present");
+  } else {
         digitalWrite(REDLED1, HIGH);
         digitalWrite(GREENLED1, LOW);
-      }
-      if (statusTresor2) {
+        Serial.println(" 1 gone");
+  }
+  if (statusTresor2) {
         digitalWrite(GREENLED2, HIGH);
         digitalWrite(REDLED2, LOW);
-      } else {
+        Serial.println(" 2 present");
+  } else {
         digitalWrite(REDLED2, HIGH);
         digitalWrite(GREENLED2, LOW);
-      }
+        Serial.println(" 2 gone");
+  }
 }
 void showCode(char values[]){
 for (int i = 0; i < sizeof(values); i++) {
@@ -110,18 +119,19 @@ for (int i = 0; i < sizeof(values); i++) {
         lcd.print(values[i]);
       }
 }
-
 void loop() {
   // put your main code here, to run repeatedly:
-  if(digitalRead(BUTTON1) == HIGH){
-    String code=generateCode();
+  if(digitalRead(BUTTON1) == LOW){
+    String code="4444";//generateCode();
     sendData.a=code;
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
+    delay(1000);
   }
-  if(digitalRead(BUTTON2)== HIGH){
+  delay(100);
+  if(digitalRead(BUTTON2)== LOW){
     String code = generateCode();
-    sendData.a=code;
+    sendData.a=code; 
     esp_now_send(addressMini2, (uint8_t *)&sendData,sizeof(sendData));
-   
+    delay(1000);   
   }
 }
