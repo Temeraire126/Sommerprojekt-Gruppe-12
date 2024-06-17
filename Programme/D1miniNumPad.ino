@@ -1,13 +1,15 @@
-#include <Keypad.h>
 #include <espnow.h>
 #include <ESP8266WiFi.h>
+#include <Keypad.h>
 #include <String>
 typedef struct codeStruct{
   String a;
 } codeStruct;
 codeStruct recvData;
+
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
   memcpy(&recvData, incomingData,sizeof(recvData));
+  Serial.println(recvData.a);
  }
 
 const byte ROWS = 4;
@@ -26,24 +28,21 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 #define PIN_OUTPUT D0
 
 void setup() {
-  // put your setup code here, to run once:
   pinMode(PIN_OUTPUT, OUTPUT);
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
-  if(esp_now_init() != 0 ) {
+  if(esp_now_init() != 0){
     Serial.println("Error");
     return;
   }
   esp_now_set_self_role(ESP_NOW_ROLE_SLAVE);
   esp_now_register_recv_cb(OnDataRecv);
-  pinMode(PIN_OUTPUT,OUTPUT);
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  digitalWrite(PIN_OUTPUT,LOW);
+ digitalWrite(PIN_OUTPUT,HIGH);
   char key = keypad.getKey();
-
   if (key) {
     Serial.println(key);
     //convert string to char[]
@@ -53,19 +52,19 @@ void loop() {
     for( int i=0;i<4;i++ ){
     codeArray[i]=tmp[i];
     }
-    //*****************************//
-    // replace '4' with codelength //
-    //*****************************//
+    //****************************
+    // replace '4' with codelength
+    //*****************************
 
     if(checkCode(codeArray, key)){
-        digitalWrite(PIN_OUTPUT,HIGH);
-        delay(2000);
+        digitalWrite(PIN_OUTPUT,LOW);
+        delay(1000);
     }
   }
 }
 
 boolean checkCode(char code[], char first) {
-  char input[sizeof(code)];
+  char input[4];
   input[0] = first;
   int index = 1;
   int time = 0;
@@ -77,9 +76,9 @@ boolean checkCode(char code[], char first) {
       time = 0;
       input[index] = key;
       index += 1;
-      if (index == sizeof(code)) {
+      if (index == 4) {
         bool cmp = true;
-        for(int i = 0; i < sizeof(code);i++){
+        for(int i = 0; i < 4;i++){
           if(input[i]!=code[i]){cmp=false;}
         }
         return cmp;
