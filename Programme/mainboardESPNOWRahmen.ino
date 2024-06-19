@@ -9,16 +9,18 @@
 #define BUTTON1 D6
 #define BUTTON2 D3
 
-#include <LiquidCrystal_I2C.h>       // Vorher hinzugefügte LiquidCrystal_I2C Bibliothek einbinden
-LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt. In diesem Fall eines mit 16 Zeichen in 2 Zeilen und der HEX-Adresse 0x27. Für ein vierzeiliges I2C-LCD verwendet man den Code "LiquidCrystal_I2C lcd(0x27, 20, 4)"
+#include <LiquidCrystal_I2C.h>       
+LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt
 
 
 const int codeLength =4;
-//adressen festlegen
- uint8_t addressMini1[] = {0xC8,0xC9,0xA3,0x14,0x32,0x59};
- uint8_t addressMini2[] = {0x60,0x01,0x94,0x10,0x09,0x3C};
- uint8_t recvAddress1[] = {0x4C,0x75,0x25,0x36,0xBD,0x64};
- uint8_t recvAddress2[] = {0x08,0x3A,0x8D,0xCF,0xAF,0x55};
+//adressen festlegen 
+//Adressen der D1Mini Keypads (passcode wird hierhin gesendet)
+ uint8_t addressMini1[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};//0xC8,0xC9,0xA3,0x14,0x32,0x59
+ uint8_t addressMini2[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};//0x60,0x01,0x94,0x10,0x09,0x3C
+//Adressen von denen der Status der Tresore erhalten wird (wird zur Unterscheidung der Tresore verwendet)
+ uint8_t recvAddress1[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};//0x4C,0x75,0x25,0x36,0xBD,0x64
+ uint8_t recvAddress2[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};//0x08,0x3A,0x8D,0xCF,0xAF,0x55
 //pakate definieren und initialisieren
  typedef struct packageCodeStruct{
   String a;
@@ -34,8 +36,9 @@ const int codeLength =4;
 bool statusTresor1=true;
 bool statusTresor2=true;
 
-bool codeIsDisplayed = false;
+bool codeIsDisplayed = false; // do we need this?
 
+//Aufruf bei Datenerhalt. Abhängig der Senderadresse wird der Inhalt in verschiedene variablen gespeichert
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
   if(0==memcmp(recvAddress1, mac , sizeof(mac))){
   memcpy(&recvData1, incomingData,sizeof(recvData1));
@@ -58,7 +61,6 @@ void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
 }
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
  //Pin Modes:
       pinMode(REDLED1, OUTPUT);
@@ -67,8 +69,7 @@ void setup() {
       pinMode(GREENLED2, OUTPUT);
       pinMode(BUTTON1, INPUT_PULLUP);
       pinMode(BUTTON2, INPUT_PULLUP);
-        pinMode(LED_BUILTIN,OUTPUT);
- 
+   //INIT für ESPNOW
   WiFi.mode(WIFI_STA);
   if(esp_now_init() != 0){
     Serial.println("Error initilizing ESPNOW");
@@ -80,6 +81,7 @@ void setup() {
   esp_now_add_peer(addressMini1, ESP_NOW_ROLE_SLAVE, 1, NULL, 0);
   esp_now_add_peer(addressMini2, ESP_NOW_ROLE_SLAVE, 2, NULL, 0);
 }
+//generiert einen zufälligen 4-stelligen Zahlencode
 String generateCode(){
   char code[codeLength];
   int zahl;
@@ -90,7 +92,7 @@ String generateCode(){
   String rtr = code;
   return rtr;
 }
-
+//stellt den Status der Tresore in den LEDs dar (grün=schlüssel ist vorhanden und kann abgeholt werden. rot= schlüssel wurde entfernt und wird verwendet)
 void updateLED(){
   statusTresor1=recvData1.b;
   statusTresor2=recvData2.b;
@@ -113,16 +115,17 @@ void updateLED(){
         Serial.println(" 2 gone");
   }
 }
+//Zeigt den Code auf dem LCD an
 void showCode(char values[]){
 for (int i = 0; i < sizeof(values); i++) {
         lcd.setCursor(0, i);
         lcd.print(values[i]);
       }
 }
+//Erstellt bei Knopfdruck einen Code und schickt diesen an den jeweiligen D1Mini
 void loop() {
-  // put your main code here, to run repeatedly:
   if(digitalRead(BUTTON1) == LOW){
-    String code="4444";//generateCode();
+    String code=generateCode();
     sendData.a=code;
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
     delay(1000);
