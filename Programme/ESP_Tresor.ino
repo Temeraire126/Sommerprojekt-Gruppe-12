@@ -7,17 +7,16 @@
 //Anschlüsse definieren
 #define SDA_Pin D1
 #define RST_Pin D4
-//mainboardadresse, paket definieren
-uint8_t addressMain[] = {0x08,0x3A,0x8D,0xCF,0xAE,0x38};
+//mainboardadresse und paket definieren
+uint8_t addressMain[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; //hier die MAC-Adresse deines Mainboards einfügen // 0x08,0x3A,0x8D,0xCF,0xAE,0x38
  typedef struct packageSend{
   bool a;
  } packageSend;
-
  packageSend sendData;
 //LEDs
 #define LED_RED D2
 #define LED_GREEN D3
-
+//Signal für korrekte Codeeingabe
 #define Input_Keypad D0
 
 //RFID-Empfänger bennen, Pins zuordnen
@@ -27,6 +26,7 @@ boolean keyThere = true;
 
 Servo myservo;
 int pos = 0;
+//Aufruf bei Senden von Daten, Inhalt nur für Debug-swecke:
 void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
       Serial.print("Last Packet Send Status: ");
   if(sendstatus == 0){
@@ -39,6 +39,7 @@ void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
 
 
 void setup() {
+ //INIT für ESPNOW
   WiFi.mode(WIFI_STA);
   if(esp_now_init() != 0){
     Serial.println("Error initilizing ESPNOW");
@@ -47,20 +48,20 @@ void setup() {
   esp_now_set_self_role(ESP_NOW_ROLE_CONTROLLER);
   esp_now_register_send_cb(onDataSent);
   esp_now_add_peer(addressMain, ESP_NOW_ROLE_COMBO, 3, NULL, 0);
-  myservo.attach(D8);
+//Servo festlegen
+ myservo.attach(D8);
 
   Serial.begin(115200);
   SPI.begin();
 
   //Initialsierung des RFID-Empfängers
   mfrc522.PCD_Init();
-
+  
   pinMode(LED_RED, OUTPUT);
   pinMode(LED_GREEN, OUTPUT);
 }
-
+//
 void loop() {
-  Serial.println(digitalRead(Input_Keypad));
   delay(10);
   
   if(keyThere){
@@ -102,6 +103,8 @@ void loop() {
     }
   }
 }
+
+//gibt bei Korrektem Wert im RFID-Chip TRUE zurück, wenn der Wert falsch oder kein Chip erkannt wird, kommt FALSE zurück
 boolean checkKey() {
   int i=0;
   int limit = 100;
@@ -130,6 +133,8 @@ if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial() ){
 }
 return false;
 }
+
+//öffnet die Tür des Tresors:
 void openSesame() {
   Serial.println("open");
   for (pos = 0; pos <= 180; pos += 1) {  //goes from 0 degrees to 180 degrees in steps of 1 degree
@@ -138,6 +143,7 @@ void openSesame() {
   }
   delay(1000);
 }
+//schließt die Tür des Tresors:
 void closeSesame() {
   Serial.println("close");
   for (pos = 180; pos >= 0; pos -= 1) {  // goes from 180 degrees to 0 degrees
