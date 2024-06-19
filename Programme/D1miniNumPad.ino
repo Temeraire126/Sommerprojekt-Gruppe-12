@@ -2,16 +2,17 @@
 #include <ESP8266WiFi.h>
 #include <Keypad.h>
 #include <String>
+//definieren der Paketstruktur die erhalten wird:
 typedef struct codeStruct{
   String a;
 } codeStruct;
 codeStruct recvData;
-
+//Aufruf bei Datenerhalt:
 void OnDataRecv(uint8_t * mac, uint8_t *incomingData, uint8_t len){
   memcpy(&recvData, incomingData,sizeof(recvData));
   Serial.println(recvData.a);
  }
-
+//Init des Keypads:
 const byte ROWS = 4;
 const byte COLS = 4;
 char keys[ROWS][COLS] = {
@@ -24,7 +25,7 @@ byte rowPins[ROWS] = { D4, D3, D2, D1 };  //connect to the row pinouts of the ke
 byte colPins[COLS] = { D8, D7, D6, D5 };  //connect to the column pinouts of the keypad
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
-
+//Pin für Signal bei korrekter Codeeingabe:
 #define PIN_OUTPUT D0
 
 void setup() {
@@ -40,29 +41,24 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
  digitalWrite(PIN_OUTPUT,HIGH);
   char key = keypad.getKey();
   if (key) {
     Serial.println(key);
     //convert string to char[]
-    
     String tmp = recvData.a;
     char codeArray[4];
     for( int i=0;i<4;i++ ){
     codeArray[i]=tmp[i];
     }
-    //****************************
-    // replace '4' with codelength
-    //*****************************
-
+    //bei korrektem Code wird das Signal an D0 für einen Sekunde verändert und kann dann vom NodeMCU ausgelesen werden
     if(checkCode(codeArray, key)){
         digitalWrite(PIN_OUTPUT,LOW);
         delay(1000);
     }
   }
 }
-
+//vergleicht eingegebenen code mit überliefertem code
 boolean checkCode(char code[], char first) {
   char input[4];
   input[0] = first;
