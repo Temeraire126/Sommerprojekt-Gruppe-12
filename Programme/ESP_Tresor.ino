@@ -22,10 +22,13 @@ uint8_t addressMain[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; //hier die MAC-Adresse 
 //RFID-Empfänger bennen, Pins zuordnen
 MFRC522 mfrc522(SDA_Pin, RST_Pin);
 
+//Variable zum Speichern ob der Schlüssel momentan im Tresor ist.
 boolean keyThere = true;
 
+//Benennung des Servo
 Servo myservo;
 int pos = 0;
+
 //Aufruf bei Senden von Daten, Inhalt nur für Debug-swecke:
 void onDataSent(uint8_t *mac_addr, uint8_t sendstatus){
       Serial.print("Last Packet Send Status: ");
@@ -63,13 +66,15 @@ void setup() {
 //
 void loop() {
   delay(10);
-  
+  //Schlüssel ist momentan da.
   if(keyThere){
     delay(10);
+   //Korrekter Code wurde eingegeben.
     if(digitalRead(Input_Keypad)==LOW){
       digitalWrite(LED_GREEN,HIGH);
       digitalWrite(LED_RED,LOW);
       openSesame();
+     //Solange der chlüssel noch da ist warten bis er entfernt wurde.
       while(checkKey()){
         delay(10);
       }
@@ -79,7 +84,9 @@ void loop() {
         digitalWrite(LED_GREEN,LOW);
     
     }
+   //Schlüssel ist momentan nicht da.
   } else{
+   //Wurde der Schlüssel zurückgelegt?
     if(checkKey()){
       digitalWrite(LED_GREEN,HIGH);
       delay(2000);
@@ -89,6 +96,7 @@ void loop() {
       esp_now_send(addressMain, (uint8_t *)&sendData,sizeof(sendData));
 
       delay(10);
+     //wenn der Schlüssel beim Schließen des Tresors entfernt wurde
       if(!checkKey()){
         digitalWrite(LED_GREEN,LOW);
         openSesame();
