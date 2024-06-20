@@ -12,7 +12,9 @@
 //Display
 #include <LiquidCrystal_I2C.h>       
 LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt
-
+//PINs des Displays:
+//- SCL: D1   grau
+//- SDA: D2   weiß
 
 const int codeLength =4;
 //adressen festlegen 
