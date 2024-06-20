@@ -31,6 +31,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 void setup() {
   pinMode(PIN_OUTPUT, OUTPUT);
   Serial.begin(115200);
+  //Initialisierung von ESPnow:
   WiFi.mode(WIFI_STA);
   if(esp_now_init() != 0){
     Serial.println("Error");
@@ -45,7 +46,7 @@ void loop() {
   char key = keypad.getKey();
   if (key) {
     Serial.println(key);
-    //convert string to char[]
+    //string zu char[] umwandeln
     String tmp = recvData.a;
     char codeArray[4];
     for( int i=0;i<4;i++ ){
@@ -66,14 +67,16 @@ boolean checkCode(char code[], char first) {
   int time = 0;
   while (time < 10000) {
     char key = keypad.getKey();
-
+    //einlesen der Zeichen
     if (key) {
       Serial.println(key);
       time = 0;
       input[index] = key;
       index += 1;
+      //sind alle zeichen eingegeben worden?
       if (index == 4) {
         bool cmp = true;
+        //einzelne Zeichen vergleichen
         for(int i = 0; i < 4;i++){
           if(input[i]!=code[i]){cmp=false;}
         }
@@ -81,6 +84,7 @@ boolean checkCode(char code[], char first) {
       }
     }
     delay(10);
+    //Zeitvariable um zu überprüfen ob jemand ein Stück Code eigegeben hat und gegangen ist.
     time += 1;
   }
   return false;
