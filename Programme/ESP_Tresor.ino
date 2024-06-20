@@ -21,6 +21,13 @@ uint8_t addressMain[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; //hier die MAC-Adresse 
 
 //RFID-Empfänger bennen, Pins zuordnen
 MFRC522 mfrc522(SDA_Pin, RST_Pin);
+//PINs RFID:
+//SDA  =  D1
+//SCK  =  D7
+//MOSI =  D6
+//MISO =  D5
+//IRQ  =  nicht angeschlossen
+//RST  =  D4
 
 //Variable zum Speichern ob der Schlüssel momentan im Tresor ist.
 boolean keyThere = true;
