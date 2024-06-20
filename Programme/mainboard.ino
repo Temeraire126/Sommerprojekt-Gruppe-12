@@ -9,6 +9,7 @@
 #define BUTTON1 D6
 #define BUTTON2 D3
 
+//Display
 #include <LiquidCrystal_I2C.h>       
 LiquidCrystal_I2C lcd(0x27, 16, 2);  //Hier wird festgelegt um was für einen Display es sich handelt
 
@@ -33,6 +34,7 @@ const int codeLength =4;
  packageResponseStruct recvData1;
  packageResponseStruct recvData2;
 
+//Sind Schlüssel in den Tresoren?
 bool statusTresor1=true;
 bool statusTresor2=true;
 
@@ -124,12 +126,14 @@ for (int i = 0; i < sizeof(values); i++) {
 }
 //Erstellt bei Knopfdruck einen Code und schickt diesen an den jeweiligen D1Mini
 void loop() {
+ //Tresor 1
   if(digitalRead(BUTTON1) == LOW){
     String code=generateCode();
     sendData.a=code;
     esp_now_send(addressMini1, (uint8_t *)&sendData,sizeof(sendData));
     delay(1000);
   }
+ //Tresor 2
   delay(100);
   if(digitalRead(BUTTON2)== LOW){
     String code = generateCode();
