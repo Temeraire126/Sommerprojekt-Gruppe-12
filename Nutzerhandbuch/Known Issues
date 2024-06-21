@@ -18,7 +18,7 @@ an dem der Schlüssel benutzt wird, sondern nur, wenn der Code beantragt wird. D
 die Benutzung des Schlüssels variabler möglich. 
 
 Der Code ist momentan noch gültig, bis ein neuer generiert wird. Dies könnte man beheben, 
-indem man einen Timer einführt, der den Code zum beispiel nach einem Tag automatisch sperrt. 
+indem man einen Timer einführt, der den Code zum Beispiel nach einem Tag automatisch sperrt. 
 Aus Zeitgründen haben wir das nicht getan.
 
 Da der RIFD-Reader manchmal zu schnell oder zu langsam arbeitet, wird der Tresor manchmal 
