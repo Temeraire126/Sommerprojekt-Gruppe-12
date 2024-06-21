@@ -1,8 +1,0 @@
-- LED-grün: D4    grün
-- LED-rot: D5     rot
-- LED-grün: D7    grün
-- LED-rot: D8     rot  
-- Taster1: D6     braun
-- Taster2: D3     braun
-- LCD-Display:  - SCL: D1   grau
-                - SDA: D2   weiß
