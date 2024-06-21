@@ -8,7 +8,7 @@
 #define SDA_Pin D1
 #define RST_Pin D4
 //mainboardadresse und paket definieren
-uint8_t addressMain[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; //hier die MAC-Adresse deines Mainboards einfügen // 0x08,0x3A,0x8D,0xCF,0xAE,0x38
+uint8_t addressMain[] = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF}; //hier die MAC-Adresse deines Mainboards einfügen z.B.: 0x08,0x3A,0x8D,0xCF,0xAE,0x38
  typedef struct packageSend{
   bool a;
  } packageSend;
@@ -142,8 +142,8 @@ if(mfrc522.PICC_IsNewCardPresent() && mfrc522.PICC_ReadCardSerial() ){
   //Kennung dezimal anzeigen
   Serial.println("Dezimalwert: " + WertDEZ);
 
-
-  return (WertDEZ == "39 123 81 211");
+//Hier den Wert deines RFID-Tacks einfügen:
+  return (WertDEZ == "XXXXXXX" );
 }
 }
 return false;
