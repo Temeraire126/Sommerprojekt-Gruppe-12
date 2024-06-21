@@ -1,10 +1,4 @@
-Nutzungshandbuch zur Inbetriebnahme
-
-Wenn der Hausmeister einem Studenten Zugang zu dem Raum gewähren will, drückt er den Knopf am Mainboard, 
-der zu dem entsprechenden Raum gehört. Daraufhin wird auf dem Display ein vierstelliger Pin ausgegeben. 
-Diesen kann der Hausmeister zum Beispiel über eine Nachricht an den Studenten schicken. Der Pin ist gültig, 
-bis ein neuer generiert wird. Der Student kann die Zahlen in das Numpad an der Schlüsselbox eingeben. 
-Bis die richtigen Zahlen eingegeben werden, leuchtet die LED rot, danach grün und die Tür öffnet sich. 
-Die LED geht aus, wenn der Schlüssel entnommen wird. Die Person kann nun den Schlüssel benutzen und 
-anschließend wieder in die Box hängen. Der Sensor erkennt den richtigen Schlüssel und leuchtet grün. 
-Wird der falsche Schlüssel reingehängt, leuchtet die LED rot. Die Tür wird verschlossen und die LED leuchtet rot. 
+1. Zusammenbau des Mainboards und der gewünschten Anzahl der Tresore
+2. Ersetzen aller Platzhalter im Sourcecode durch die korrekten Macadressen, sowie der zu lesenden Werte der RFID-Tacks
+3. Nach einem Neustart der Tresore ist der Servo in einer Halboffenen Position. Damit der Tresor richtig verschlossen ist muss dieser mit einem korrekt eingegebenem Passode geöffnet und wieder geschlossen werden.
+4. Jetzt können auf Anfrage Codes generiert und vergeben werden um die Tresore wieder zu öffnen!
