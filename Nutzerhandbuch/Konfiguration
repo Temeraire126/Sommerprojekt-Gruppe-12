@@ -1,1 +1,3 @@
-
+Konfigurierbar sind noch:
+-  Die Länge des generierten Zahlencodes: Hierfür müssen in mainboard.ino und ESP_Tresor.ino die Variablen 'codeLength' auf die gewünschte Länge angepasst werden
+-  Zeit die zum Eingeben des korrekten Zahlencodes gegeben sind: Dafür die Bedingung der while-Schleife in D1MiniNumPad.ino anpassen
