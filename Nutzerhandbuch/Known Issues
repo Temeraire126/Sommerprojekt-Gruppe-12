@@ -8,3 +8,4 @@ Grenzen der verwendeten Hardware:
  - Tresor und Mainboard können unter Idealbedingungen nur ~200 Meter entfernt sein 
 Probleme des Sourcecodes:
  - Nach der Verwendung des generierten Codes wird dieser nicht zurückgesetzt -> solange kein neuer generiert wird kann der Tresor immer wieder entsperrt werden
+ - Der generierte Code ist nur Pseudozufällig, manche Kombinationen tauchen immer wieder auf
