@@ -28,6 +28,8 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 //Pin für Signal bei korrekter Codeeingabe:
 #define PIN_OUTPUT D0
 
+ int codeLength = 4;
+
 void setup() {
   pinMode(PIN_OUTPUT, OUTPUT);
   Serial.begin(115200);
@@ -48,8 +50,8 @@ void loop() {
     Serial.println(key);
     //string zu char[] umwandeln
     String tmp = recvData.a;
-    char codeArray[4];
-    for( int i=0;i<4;i++ ){
+    char codeArray[codeLength];
+    for( int i=0;i<codeLength;i++ ){
     codeArray[i]=tmp[i];
     }
     //bei korrektem Code wird das Signal an D0 für einen Sekunde verändert und kann dann vom NodeMCU ausgelesen werden
@@ -61,7 +63,7 @@ void loop() {
 }
 //vergleicht eingegebenen code mit überliefertem code
 boolean checkCode(char code[], char first) {
-  char input[4];
+  char input[codeLength];
   input[0] = first;
   int index = 1;
   int time = 0;
@@ -74,10 +76,10 @@ boolean checkCode(char code[], char first) {
       input[index] = key;
       index += 1;
       //sind alle zeichen eingegeben worden?
-      if (index == 4) {
+      if (index == codeLength) {
         bool cmp = true;
         //einzelne Zeichen vergleichen
-        for(int i = 0; i < 4;i++){
+        for(int i = 0; i < codeLength ;i++){
           if(input[i]!=code[i]){cmp=false;}
         }
         return cmp;
