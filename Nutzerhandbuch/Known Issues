@@ -1,1 +1,25 @@
+Das Modell hat aufgrund der Batterie eine begrenzte Laufzeit. Dies kann verbessert werden, 
+wenn der Safe an das Stromnetz angeschlossen wird. In diesem Fall kann auch ein Stromausfall 
+eine Sicherheitslücke darstellen, weswegen wir zu einer Kombination aus Stromanschluss und 
+einer Batterie für Notfälle tendieren.
 
+Der Safe muss einbruchssicher sein. Da das Modell aus Holz ist, kommt unser Modell für eine 
+tatsächliche Anwendung nicht infrage. Aber auch bei einem anderen Material muss man die Kabel 
+unzugänglicher verbauen, da man beim Öffnen, selbst ohne den doppelten Boden zu entfernen, an 
+die Kabel der LEDs und Kabel kommt. Außerdem ist die Lösung mit dem Draht als Erweiterung des 
+Servos suboptimal. Dennoch ist der Safe im Idealfall einbruchssicherer, als das Schloss der 
+Tür zu brechen, die der Schlüssel öffnet, wenn man einige Details anpasst.
+
+RFID-Sensor ist nicht fest mit dem Schlüssel verbunden und kann leicht abgenommen werden. 
+Eine mögliche Lösung wäre, den RFID-Sensor fest am Schlüssel zu verbauen.
+
+Auch weiterhin muss der Hausmeister erreichbar sein, allerdings nicht mehr zu dem Zeitpunkt, 
+an dem der Schlüssel benutzt wird, sondern nur, wenn der Code beantragt wird. Dadurch ist 
+die Benutzung des Schlüssels variabler möglich. 
+
+Der Code ist momentan noch gültig, bis ein neuer generiert wird. Dies könnte man beheben, 
+indem man einen Timer einführt, der den Code zum beispiel nach einem Tag automatisch sperrt. 
+Aus Zeitgründen haben wir das nicht getan.
+
+Da der RIFD-Reader manchmal zu schnell oder zu langsam arbeitet, wird der Tresor manchmal 
+geöffnet oder geschlossen, wenn es nicht vorgesehen ist.
